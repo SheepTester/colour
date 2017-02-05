@@ -13,6 +13,7 @@
       body {
         font-family: 'Barrio', cursive;
         margin: 0;
+        transition: background .5s;
       }
       thing {
         position: fixed;
@@ -26,13 +27,30 @@
         font-size: 10vw;
         line-height: 0;
       }
+      textarea {
+        opacity: 0;
+        position: fixed;
+        top: 100%;
+      }
     </style>
   </head>
   <body>
     <thing>Paste in a color</thing>
+    <textarea></textarea>
 
     <script src="../sheep.js"></script>
-    <script></script>
+    <script>
+document.querySelector('textarea').focus(); // keep focus on the textarea
+document.querySelector('textarea').onblur=e=>document.querySelector('textarea').focus();
+document.onpaste=e=>{
+  e.stopPropagation();
+  e.preventDefault();
+  var paste=e.clipboardData||window.clipboardData; // get paste data
+  paste=paste.getData('Text').replace(/\s/g,''); // get rid of whitespace
+  if (paste[0]!=='#'&&!/\(/.test(paste)) paste='#'+paste; // if it doesn't have parantheses nor does it start with # add # to it
+  document.body.style.backgroundColor=paste; // change the background-color of body
+};
+    </script>
   </body>
   <!-- MADE BY SEAN -->
 </html>
