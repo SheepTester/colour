@@ -49,6 +49,7 @@ document.onpaste=e=>{
   paste=paste.getData('Text').replace(/\s/g,''); // get rid of whitespace
   if (paste[0]!=='#'&&!/\(/.test(paste)) paste='#'+paste; // if it doesn't have parantheses nor does it start with # add # to it
   document.body.style.backgroundColor=paste; // change the background-color of body
+  if (document.querySelector('thing')) document.body.removeChild(document.querySelector('thing')); // thing is not needed after the first paste
 };
     </script>
   </body>
