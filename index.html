@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>color</title>
+    <title>colour</title>
     <meta charset="UTF-8">
-    <meta name="description" content="For when someone sends me a hexadecimal color and I'm too lazy to use alternative methods to read it."/>
+    <meta name="description" content="For when someone sends me a hexadecimal colour and I'm too lazy to use alternative methods to read it."/>
     <link href="https://fonts.googleapis.com/css?family=Barrio" rel="stylesheet">
     <style>
       html, body {
@@ -35,7 +35,7 @@
     </style>
   </head>
   <body>
-    <thing>Paste in a color</thing>
+    <thing>Paste in a colour</thing>
     <textarea></textarea>
 
     <script src="../sheep.js"></script>
@@ -47,9 +47,10 @@ document.onpaste=e=>{
   e.preventDefault();
   var paste=e.clipboardData||window.clipboardData; // get paste data
   paste=paste.getData('Text').replace(/\s/g,''); // get rid of whitespace
-  if (paste[0]!=='#'&&!/\(/.test(paste)) paste='#'+paste; // if it doesn't have parantheses nor does it start with # add # to it
+  if (paste[0]!=='#'&&!/[^0-9abcdef]/i.test(paste)) paste='#'+paste; // if it starts with # and it contains only 0-f add # to it
   document.body.style.backgroundColor=paste; // change the background-color of body
   if (document.querySelector('thing')) document.body.removeChild(document.querySelector('thing')); // thing is not needed after the first paste
+  if (document.querySelector('sheepmenu')) document.body.removeChild(document.querySelector('sheepmenu')); // the sheep leaves
 };
     </script>
   </body>
