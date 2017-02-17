@@ -38,10 +38,15 @@
     <thing>Paste in a colour</thing>
     <textarea></textarea>
 
-    <script src="../sheep.js"></script>
     <script>
 document.querySelector('textarea').focus(); // keep focus on the textarea
 document.querySelector('textarea').onblur=e=>document.querySelector('textarea').focus();
+if (window.location.hash) {
+  var colour=window.location.hash.slice(1);
+  if (colour[0]!=='#'&&!/[^0-9abcdef]/i.test(colour)) colour='#'+colour;
+  document.body.style.backgroundColor=colour;
+  if (document.querySelector('thing')) document.body.removeChild(document.querySelector('thing'));
+}
 document.onpaste=e=>{
   e.stopPropagation();
   e.preventDefault();
@@ -50,7 +55,6 @@ document.onpaste=e=>{
   if (paste[0]!=='#'&&!/[^0-9abcdef]/i.test(paste)) paste='#'+paste; // if it starts with # and it contains only 0-f add # to it
   document.body.style.backgroundColor=paste; // change the background-color of body
   if (document.querySelector('thing')) document.body.removeChild(document.querySelector('thing')); // thing is not needed after the first paste
-  if (document.querySelector('sheepmenu')) document.body.removeChild(document.querySelector('sheepmenu')); // the sheep leaves
 };
     </script>
   </body>
