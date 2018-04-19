@@ -39,22 +39,28 @@
     <textarea></textarea>
 
     <script>
-document.querySelector('textarea').focus(); // keep focus on the textarea
-document.querySelector('textarea').onblur=e=>document.querySelector('textarea').focus();
-if (window.location.hash) {
-  var colour=window.location.hash.slice(1);
-  if (colour[0]!=='#'&&!/[^0-9abcdef]/i.test(colour)) colour='#'+colour;
-  document.body.style.backgroundColor=colour;
-  if (document.querySelector('thing')) document.body.removeChild(document.querySelector('thing'));
-}
-document.onpaste=e=>{
+let textarea = document.querySelector('textarea'),
+    thing = document.querySelector('thing');
+textarea.focus(); // keep focus on the textarea
+textarea.onblur = () => textarea.focus();
+(window.onhashchange = () => {
+  if (window.location.hash) {
+    var colour = window.location.hash.slice(1);
+    if (colour[0] !== '#' && !/[^0-9abcdef]/i.test(colour)) colour = '#' + colour; // if it starts with # and it contains only 0-f add # to it
+    document.body.style.backgroundColor = colour; // change the background-color of body
+    if (thing) { // thing is not needed after the first paste
+      document.body.removeChild(thing);
+      thing = null;
+    }
+  }
+})();
+document.onpaste = e => {
   e.stopPropagation();
   e.preventDefault();
-  var paste=e.clipboardData||window.clipboardData; // get paste data
-  paste=paste.getData('Text').replace(/\s/g,''); // get rid of whitespace
-  if (paste[0]!=='#'&&!/[^0-9abcdef]/i.test(paste)) paste='#'+paste; // if it starts with # and it contains only 0-f add # to it
-  document.body.style.backgroundColor=paste; // change the background-color of body
-  if (document.querySelector('thing')) document.body.removeChild(document.querySelector('thing')); // thing is not needed after the first paste
+  
+  var paste = e.clipboardData || window.clipboardData; // get paste data
+  paste = paste.getData('Text').replace(/\s/g, ''); // get rid of whitespace
+  window.location.hash = paste; // trigger update
 };
     </script>
   </body>
